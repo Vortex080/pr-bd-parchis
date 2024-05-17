@@ -1,17 +1,16 @@
+/*
 
--- Mostrar un listado de las partidas programadas de cada competición
--- Parchis coral
+        CONSULTAS
+
+*/
+
+
+
+/*4. Mostrar un listado de las partidas programadas de cada competición.*/
+
 select * 
-from partida
+from partida 
 where nombre_competicion like upper('TORNEO PARCHÍS CORAL');
--- Parchis Lima
-select * 
-from partida
-where nombre_competicion like upper('PARTIDA PARCHÍS LIMA');
--- Parchis oro
-select * 
-from partida
-where nombre_competicion like upper('CAMPEONATO PARCHÍS ORO');
 
 -- 5. Realiza una estadística que muestre la veces que ha jugado 
 -- cada jugador con cada uno de los cuatro colores
@@ -59,4 +58,46 @@ select p.nombre, p.ap1, p.ap2, j.nombre_competicion
 from participantes p 
 join juega j on p.asociado = j.n_jugador;
 
--- 
+/*10. ¿Quién ha ganado una determinada competición? Para no complicar la
+introducción de datos, consideramos los emparejamientos de la
+siguiente manera. El que ha ganado la competición es el que HA
+GANADO MÁS PARTIDAS en esa competición.*/
+SELECT j.n_jugador, p.nombre, p.ap1, p.ap2, pa.nombre_competicion, COUNT(*) as total_partidas_ganadas
+FROM partida pa
+JOIN jugador j ON pa.n_jugador_gana = j.n_jugador
+JOIN participantes p ON j.n_jugador = p.asociado
+JOIN competicion com ON pa.nombre_competicion = com.nombre AND pa.fecha_competicion = com.fecha
+WHERE com.nombre LIKE UPPER('TORNEO PARCHÍS CORAL')
+GROUP BY j.n_jugador, p.nombre, p.ap1, p.ap2, pa.nombre_competicion
+HAVING COUNT(*) = 3
+ORDER BY total_partidas_ganadas DESC;
+
+SELECT j.n_jugador, p.nombre, p.ap1, p.ap2, pa.nombre_competicion, COUNT(*) as total_partidas_ganadas
+FROM partida pa
+JOIN jugador j ON pa.n_jugador_gana = j.n_jugador
+JOIN participantes p ON j.n_jugador = p.asociado
+JOIN competicion com ON pa.nombre_competicion = com.nombre AND pa.fecha_competicion = com.fecha
+WHERE com.nombre LIKE UPPER('PARTIDA PARCHÍS LIMA')
+GROUP BY j.n_jugador, p.nombre, p.ap1, p.ap2, pa.nombre_competicion
+HAVING COUNT(*) = 3
+ORDER BY total_partidas_ganadas DESC;
+
+SELECT j.n_jugador, p.nombre, p.ap1, p.ap2, pa.nombre_competicion, COUNT(*) as total_partidas_ganadas
+FROM partida pa
+JOIN jugador j ON pa.n_jugador_gana = j.n_jugador
+JOIN participantes p ON j.n_jugador = p.asociado
+JOIN competicion com ON pa.nombre_competicion = com.nombre AND pa.fecha_competicion = com.fecha
+WHERE com.nombre LIKE UPPER('CAMPEONATO PARCHÍS ORO')
+GROUP BY j.n_jugador, p.nombre, p.ap1, p.ap2, pa.nombre_competicion
+HAVING COUNT(*) = 3
+ORDER BY total_partidas_ganadas DESC;
+
+/*11. Jugador que ha ganado más competiciones.*/
+SELECT j.n_jugador, p.nombre, p.ap1, p.ap2, pa.nombre_competicion, COUNT(*) as total_partidas_ganadas
+FROM partida pa
+JOIN jugador j ON pa.n_jugador_gana = j.n_jugador
+JOIN participantes p ON j.n_jugador = p.asociado
+JOIN competicion com ON pa.nombre_competicion = com.nombre AND pa.fecha_competicion = com.fecha
+GROUP BY j.n_jugador, p.nombre, p.ap1, p.ap2, pa.nombre_competicion
+HAVING COUNT(*) = 3
+ORDER BY total_partidas_ganadas DESC, pa.nombre_competicion;
