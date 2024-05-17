@@ -23,23 +23,24 @@ begin
         -- Bucle para verificar que el ID no se null ni este vacio
         if (:new.asociado is not null or :new.asociado not like '') then
             -- Bucle para verificar que se inserten número y no letras
-            if (:new.asociado not like '%(^0-9)%') then 
-                -- ERROR
-                raise_application_error(-20001, 'El id no puede llevar caracteres');
-            
-            else
+            if (:new.asociado not like '.*[^0-9].*') then 
+
                 -- Bucle para verificar que el Id no existe
                 if (:new.asociado > num_max_asociado) then
                 
                     insert into participantes (asociado, nombre, ap1, ap2, correo_electronico, telefono, tipo_via, num_via, nombre_via, bloque, escalera, planta, puerta, seccion, nombreloc, nombreprov)
-                    values (:new.asociado, :new.nombre, :new.ap1, :new.ap2, :new.correo_electronico, :new.telefono, :new.tipo_via, :new.nombre_via, :new.bloque, :new.escalera, :new.planta, :new.puerta, :new.seccion, :new.nombreloc, :new.nombreprov);
+                    values (:new.asociado, :new.nombre, :new.ap1, :new.ap2, :new.correo_electronico, :new.telefono, :new.tipo_via, :new.num_via,:new.nombre_via, :new.bloque, :new.escalera, :new.planta, :new.puerta, :new.seccion, :new.nombreloc, :new.nombreprov);
                 
                 else 
                     -- ERROR
-                     raise_application_error(-20002, 'El id insertado ya existe');
+                     raise_application_error(-20001, 'El id insertado ya existe');
                 
                 end if;
             
+            else
+                
+                -- ERROR
+                raise_application_error(-20002, 'El id no puede llevar caracteres');
             end if; 
         
          else
