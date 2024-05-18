@@ -152,10 +152,32 @@ end;
 /
 --5C
 
+create or replace procedure listar_partidas_por_realizadar
+as
+begin
+
+    for r in (
+        select c.nombre as competicion,
+               c.fecha as fecha_competicion,
+               p.jornada,
+               p.jornada_fin,
+               p.n_arbitro,
+               p.n_jugador_gana
+        from competicion c
+        join partida p on c.nombre = p.nombre_competicion and c.fecha = p.fecha_competicion
+        where p.jornada > sysdate
+        order by c.nombre, p.jornada
+    ) loop
+        dbms_output.put_line('Competición: ' || r.competicion || ', Fecha: ' || to_char(r.fecha_competicion, 'DD-MM-YYYY') || ', Jornada: ' || r.jornada || ', Jornada Fin: ' || to_char(r.jornada_fin, 'DD-MM-YYYY') || ', Árbitro: ' || r.n_arbitro || ', Jugador Gana: ' || r.n_jugador_gana);
+    end loop;
+
+end;
+/
 
 --5D
 
-create or replace procedure listar_partidas_programadas is
+create or replace procedure listar_partidas_programadas 
+as
 begin
     for r in (
         select c.nombre as competicion,
@@ -176,6 +198,27 @@ end;
 
 --5E
 
+create or replace procedure listar_partidas_porrealizadas(ncomp varchar2)
+as
+begin
+
+   for r in (
+        select c.nombre as competicion,
+               c.fecha as fecha_competicion,
+               p.jornada,
+               p.jornada_fin,
+               p.n_arbitro,
+               p.n_jugador_gana
+        from competicion c
+        join partida p on c.nombre = p.nombre_competicion and c.fecha = p.fecha_competicion
+        where p.jornada > sysdate and nombre_competicion like upper(ncomp)
+        order by c.nombre, p.jornada
+    ) loop
+        dbms_output.put_line('Competición: ' || r.competicion || ', Fecha: ' || to_char(r.fecha_competicion, 'DD-MM-YYYY') || ', Jornada: ' || r.jornada || ', Jornada Fin: ' || to_char(r.jornada_fin, 'DD-MM-YYYY') || ', Árbitro: ' || r.n_arbitro || ', Jugador Gana: ' || r.n_jugador_gana);
+    end loop;
+
+end;
+/
 
 --5F
 
