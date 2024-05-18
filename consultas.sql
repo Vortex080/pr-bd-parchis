@@ -19,7 +19,7 @@ select p.nombre, j.n_jugador,
        count(case when upper(j.color_ficha) like upper('rojo') then 1 end) "Rojo",
        count(case when upper(j.color_ficha) like upper('azul') then 1 end) "Azul",
        count(case when upper(j.color_ficha) like upper('amarillo') then 1 end) "Amarillo",
-       count(case when upper(j.color_ficha) like upper('verde') then 1 end) as Verde
+       count(case when upper(j.color_ficha) like upper('verde') then 1 end) "Verde",
 from juega j, participantes p
 where p.asociado = j.n_jugador
 group by j.n_jugador, p.nombre
