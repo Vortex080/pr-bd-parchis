@@ -64,9 +64,9 @@ as
                                 then v_color := 'AMARILLO';
                             when 4
                                 then v_color := 'VERDE';
-                            else v_color;
-                        end;
+                        end case;
                         
+                        -- Insertamos el jugador en la partida
                         insert into juega (nombre_competicion, fecha_competicion, jornada, n_jugador, color_ficha)
                         values (ncomp, fcomp, jor, v_jugador, v_color);
                                                 
@@ -80,7 +80,3 @@ as
    end loop;
 end; 
 /
-
-
-SELECT CEIL(DBMS_RANDOM.VALUE(0, 3)) AS random_value
-FROM dual;
