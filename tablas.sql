@@ -118,3 +118,5 @@ Create table juega(
     references jugador(n_jugador)
 );
 
+ALTER TABLE juega
+DISABLE CONSTRAINT juega_fk_partida;

@@ -1270,5 +1270,6 @@ UPDATE partida SET n_jugador_gana = '240' WHERE n_arbitro = '237';
 /*INSERT JUEGA*/
 /*--------------------*/
 
-
+INSERT INTO juega (nombre_competicion, fecha_competicion, jornada, n_jugador, color_ficha)
+VALUES ('TORNEO PARCHÍS CORAL', TO_DATE('01-11-2024', 'DD-MM-YYYY'), TO_DATE('01-11-2024 10:00:00', 'DD-MM-YYYY HH24:MI:SS'), '083', 'ROJO');
 
