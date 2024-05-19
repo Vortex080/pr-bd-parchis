@@ -15,9 +15,11 @@ INSERT INTO competicion (nombre, fecha) VALUES ('TORNEO PARCHÍS CORAL', '01-11-
 delete partida where nombre_competicion like 'TORNEO PARCHÍS CORAL';
 delete juega where nombre_competicion like 'TORNEO PARCHÍS CORAL';
 
-execute inserta_jugador_partida('TORNEO PARCHÍS CORAL' , :new.fecha, :new.fecha + f_i);
+execute inserta_jugador_partida('TORNEO PARCHÍS CORAL' , TO_DATE('01-11-2024 10:00:00', 'DD-MM-YYYY HH24:MI:SS') , TO_DATE('01-11-2024 10:20:00', 'DD-MM-YYYY HH24:MI:SS'));
 
 select * from juega where nombre_competicion like 'TORNEO PARCHÍS CORAL';
+
+
 
 execute prueba;
 
