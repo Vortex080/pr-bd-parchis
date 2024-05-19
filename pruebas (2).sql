@@ -80,6 +80,8 @@ as
                                     then v_color := 'VERDE';
                             end case;
                             
+                            
+                            
                             -- Insertamos el jugador en la partida
                             insert into juega (nombre_competicion, fecha_competicion, jornada, n_jugador, color_ficha)
                             values (ncomp, fcomp, jor, v_jugador, v_color);
@@ -95,30 +97,21 @@ as
              else 
              
                 DBMS_OUTPUT.PUT_LINE('else');
-             
-                select n_arbitro into v_arbitrando
-                from partida
-                where nombre_competicion like upper(ncomp) and 
-                    rownum = v_i;
+                    
               while v_val = false or v_j = v_max
                 loop
-             
-                    -- Select saca todos los participantes 
-                    select asociado into v_jugador
-                    from participantes
-                    where rownum = v_j;
-             
-                if (v_jugador not like v_arbitrando or  v_arbitrando = null) then 
-                         DBMS_OUTPUT.PUT_LINE('if arbitro');
-                        if (v_jugador not like v_jugado or v_jugado = null) then
-                                                 DBMS_OUTPUT.PUT_LINE('if jugador');
+                            select asociado into v_jugador
+                            from participantes
+                            where rownum = v_j;
+                
+                
                             -- Select con random value para sacar el numero de la ficha
                             select ceil(DBMS_RANDOM.VALUE(0, 4)) into v_ficha
                             from dual;
                             
                             -- Case para convertir el numero random en el color correspondiente
                             case v_ficha
-                            
+                                
                                 when 1 
                                     then v_color := 'AZUL';
                                 when 2 
@@ -129,15 +122,17 @@ as
                                     then v_color := 'VERDE';
                             end case;
                             
+                            DBMS_OUTPUT.PUT_LINE(ncomp ||' '  ||fcomp ||' '  || jor ||' '  || v_jugador || ' ' || v_color);
+                            
+                            
                             -- Insertamos el jugador en la partida
-                            insert into juega (nombre_competicion, fecha_competicion, jornada, n_jugador, color_ficha)
+                           insert into juega (nombre_competicion, fecha_competicion, jornada, n_jugador, color_ficha)
                             values (ncomp, fcomp, jor, v_jugador, v_color);
+
                             
                             DBMS_OUTPUT.PUT_LINE('Jugador insertado');
                                                     
                             v_val := true;
-                        end if;
-                    end if;
                     v_j := v_j + 1;
                 end loop;
              
@@ -151,3 +146,5 @@ end;
 /
 
 drop procedure inserta_jugador_partida;
+
+ 
