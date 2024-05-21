@@ -241,7 +241,7 @@ BEGIN
     loop
         
         f_i := f_i /1400;
-        f_f := (f_i+20) /1400;
+        f_f := ((f_i*1400)+20) /1400;
     
         -- La fecha de la competición debera ser insertada con hora de inicio
         insert into partida (nombre_competicion, fecha_competicion, jornada, jornada_fin, n_arbitro, n_jugador_gana)
@@ -256,7 +256,7 @@ BEGIN
         
         inserta_jugador_partida(:new.nombre , :new.fecha, :new.fecha + f_i);
         
-        f_i := f_f;
+        f_i := f_f * 1400;
         
         DBMS_OUTPUT.PUT_LINE('Partida creada' || i );
     end loop;
