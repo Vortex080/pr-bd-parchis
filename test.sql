@@ -9,16 +9,16 @@ INSERT INTO participantes (asociado, nombre, ap1, ap2, correo_electronico, telef
 VALUES ('002', 'JUAN', 'GOMEZ', 'LOPEZ', 'JUAN@EJEMPLO.COM', 612345678, 'C', 123, 'ALAMEDA', NULL, NULL, '1', 'A', NULL, 'ALICANTE', 'ALICANTE');
 
 -- Test insertar conpetición
-INSERT INTO competicion (nombre, fecha) VALUES ('sdfsdfsafd', '01-11-2024');
+INSERT INTO competicion (nombre, fecha) VALUES ('s1231231ds', '01-11-2024');
 
 
-delete partida where nombre_competicion like 'TORNEO PARCHÍS CORAL';
+delete partida where nombre_competicion like 'prueba5';
 delete juega where nombre_competicion like 'TORNEO PARCHÍS CORAL';
 
 execute inserta_jugador_partida('TORNEO PARCHÍS CORAL' , TO_DATE('01-11-2024', 'DD-MM-YYYY') , TO_DATE('01-11-2024 10:40:00', 'DD-MM-YYYY HH24:MI:SS'));
 
-select * from juega where nombre_competicion like 'TORNEO PARCHÍS CORAL';
-select * from partida where nombre_competicion like 'TORNEO PARCHÍS CORAL';
+select * from juega where nombre_competicion like 'sdfsdfsafd';
+select * from partida where nombre_competicion like 'sdfsdfsafd';
 
                 select n_arbitro
                 from partida
@@ -50,8 +50,9 @@ select j.n_jugador, p.n_arbitro
             from juega j join partida p on p.nombre_competicion = j.nombre_competicion
             where upper(j.nombre_competicion) like upper('TORNEO PARCHÍS CORAL') -- verificamos que la competición es la insertada
                     and j.jornada = p.jornada;
-
-execute prueba('TORNEO PARCHÍS CORAL' , TO_DATE('01-11-2024 10:00:00', 'DD-MM-YYYY HH24:MI:SS') , TO_DATE('01-11-2024 10:20:00', 'DD-MM-YYYY HH24:MI:SS'));
+commit;
+select * from competicion; 
+execute inserta_jugador_partida('prueba5' , TO_DATE('10/02/2000 10:00:00', 'DD-MM-YYYY HH24:MI:SS') , 1);
 
 create or replace procedure prueba
 as 
@@ -160,3 +161,24 @@ end;
                         where rownum <= 3
                         and nombre_competicion like upper('TORNEO PARCHÍS CORAL') )
                         where rnum = 3;
+                        
+                        
+                                select asociado
+                    from (
+                        select asociado, rownum as rnum
+                        from participantes
+                        where rownum <= 1
+                        order by asociado desc)
+            where rnum = 1;
+            
+            
+            select count(*)
+            from jugador;
+            
+            
+            select narbi 
+                from (select n_arbitro as narbi, rownum as rnum, nombre_competicion
+                            from partida
+                            where rownum <= 1
+                            and nombre_competicion like 'sdfsdfsafd' )
+            where rnum = 1;
