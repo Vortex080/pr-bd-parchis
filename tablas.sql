@@ -118,5 +118,11 @@ Create table juega(
     references jugador(n_jugador)
 );
 
-ALTER TABLE juega
-DISABLE CONSTRAINT juega_fk_partida;
+
+create table ganadores(
+
+    n_jugador varchar2(3),
+    ncomp varchar2(30),
+    ronda number
+
+);

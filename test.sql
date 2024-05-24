@@ -9,16 +9,18 @@ INSERT INTO participantes (asociado, nombre, ap1, ap2, correo_electronico, telef
 VALUES ('002', 'JUAN', 'GOMEZ', 'LOPEZ', 'JUAN@EJEMPLO.COM', 612345678, 'C', 123, 'ALAMEDA', NULL, NULL, '1', 'A', NULL, 'ALICANTE', 'ALICANTE');
 
 -- Test insertar conpetición
-INSERT INTO competicion (nombre, fecha) VALUES ('s1231231ds', '01-11-2024');
+INSERT INTO competicion (nombre, fecha) VALUES ('antonio7', '14-11-2024 10:00:00');
 
 
 delete partida where nombre_competicion like 'prueba5';
 delete juega where nombre_competicion like 'TORNEO PARCHÍS CORAL';
+delete ganadores;
 
 execute inserta_jugador_partida('TORNEO PARCHÍS CORAL' , TO_DATE('01-11-2024', 'DD-MM-YYYY') , TO_DATE('01-11-2024 10:40:00', 'DD-MM-YYYY HH24:MI:SS'));
 
-select * from juega where nombre_competicion like 'sdfsdfsafd';
-select * from partida where nombre_competicion like 'sdfsdfsafd';
+select * from juega where nombre_competicion like 'antonio6';
+select * from partida where nombre_competicion like 'antonio7';
+select * from ganadores;
 
                 select n_arbitro
                 from partida
@@ -52,7 +54,21 @@ select j.n_jugador, p.n_arbitro
                     and j.jornada = p.jornada;
 commit;
 select * from competicion; 
-execute inserta_jugador_partida('prueba5' , TO_DATE('10/02/2000 10:00:00', 'DD-MM-YYYY HH24:MI:SS') , 1);
+execute insert_partida_comp('prueba5' , TO_DATE('10/02/2000 10:00:00', 'DD-MM-YYYY HH24:MI:SS') , 1);
+execute inserta_jugador_partida('prueba5' , TO_DATE('10/02/2000 10:00:00', 'DD-MM-YYYY HH24:MI:SS'));
+execute insert_ganador_partida_auto('antonio7', 3);
+
+
+         select njug
+         from (select n_jugador as njug, rownum as rnum
+                from juega
+                where rownum <= 2
+                    and nombre_competicion like 'antonio6' 
+                    and jornada = '14/11/2024 10:01:02'
+                    )
+        where rnum = 2;
+        
+commit;
 
 create or replace procedure prueba
 as 

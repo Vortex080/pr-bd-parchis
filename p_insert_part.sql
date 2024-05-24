@@ -30,15 +30,32 @@ begin
         end case;
 
 
+            if (n_ronda = 4)
+            then
+            
+
+                f_i := f_i + 7*1400;
+                f_f := f_f + 7*1400;
+                
+            
+            end if;
+            
+            if (n_ronda = 1)
+            then
+                
+                f_i := f_i + 60*1400;
+                f_f := f_f + 60*1400;
+            
+            end if;
+
         -- bucle para las partidas
         for i in 1..n_ronda
         loop
             
             -- Calculo de fechas
-            f_i := f_i /1400;
-            f_f := ((f_i*1400)+20) /1400;
-        
-        
+                f_i := f_i /1400;
+                f_f := ((f_i*1400)+20) /1400;
+                
             -- Select saca el número maximo de jugadores
             select count(*)-i into v_max
             from participantes;

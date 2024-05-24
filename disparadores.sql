@@ -228,171 +228,28 @@ end;
 -- partidas de una copmpetición
 --Disparador creación partidas
 -- TODO
-CREATE OR REPLACE TRIGGER Trigger_partidas_competi
-after INSERT ON competicion 
-REFERENCING NEW AS NEW FOR EACH ROW -- para cada fila insertada new
+
+
+create or replace trigger Trigger_partidas_competi
+after insert on competicion 
+REFERENCING NEW AS NEW 
+FOR EACH ROW -- para cada fila insertada new
 declare
-    f_i number := 1;
-    f_f number := 0;
 
-BEGIN 
-
-    for i in 1..16 
-    loop
-        
-        f_i := f_i /1400;
-        f_f := ((f_i*1400)+20) /1400;
+begin
+    -- Cuando inserta
+    if inserting then
+        -- Llama al procidimiento de creación de partida
+        insert_partida_comp(:new.nombre, :new.fecha, 1);
+        -- Llama al procedimineto de insercción de jugadores en partida
+        inserta_jugador_partida(:new.nombre , :new.fecha);
     
-        -- La fecha de la competición debera ser insertada con hora de inicio
-        insert into partida (nombre_competicion, fecha_competicion, jornada, jornada_fin, n_arbitro, n_jugador_gana)
-        values (
-            :new.nombre,
-            :new.fecha, -- fecha de la competición 
-            :new.fecha + f_i, -- agrega i minutos a la fecha a la jornada de inicio
-            :new.fecha +  f_f, -- agrega i + 20 minutos a la fecha de la jornada fin
-            '001', -- n_albitro 
-            null -- n_jugador_gana 
-        );
-        
-        inserta_jugador_partida(:new.nombre , :new.fecha, :new.fecha + f_i);
-        
-        f_i := f_f * 1400;
-        
-        DBMS_OUTPUT.PUT_LINE('Partida creada' || i );
-    end loop;
+    end if;
     
-END; 
-/ 
-
--- Procedimiento jugadores y albitros
-
-create or replace procedure inserta_jugador_partida(ncomp varchar2, fcomp date, jor date) 
-as
-    -- Variable de jugador ya insertado
-    v_jugado varchar2(3) := null;
-    -- Varible de arbitro ya insertado
-    v_arbitrando varchar2(3) := null;
-    -- Variable jugador no insertado
-    v_jugador varchar2(3) := null;
-    -- Variable temporal incrementable
-    v_i number := 1;
-    -- Variable temporal incrementable
-    v_j number := 1;
-    -- Variable booleana para verificar si se a insertado
-    v_val boolean := false;
-    -- Variable ID maximo de asociado
-    v_max number := 0;
-    -- Variable número de la ficha
-    v_ficha number := 0;
-    -- Variable para el color de la ficha
-    v_color varchar2(10);
-
-  begin 
-   
-   -- Bucle 4 veces una por jugador
-   for i in 1..4 
-   loop
-         DBMS_OUTPUT.PUT_LINE('bucle');
-        while v_val = false
-        loop
-             DBMS_OUTPUT.PUT_LINE('while 1');
-             
-             -- Select saca todas partidas con albtros y jugadores
-                select j.n_jugador, p.n_arbitro into v_jugado, v_arbitrando
-                from juega j join partida p on p.nombre_competicion = j.nombre_competicion
-                where upper(j.nombre_competicion) like upper(ncomp) -- verificamos que la competición es la insertada
-                        and j.jornada = p.jornada -- La jornada debe ser la misma en cada tupla de juega y de partida
-                        and rownum = v_i; -- Row num para oder mover por la tabla hasat encotnrar un jugador bueno
-             
-             if ((select n_jugador from juega) != null or (select n_jugador from juega) not like '') then
-                      
-                -- Introduce en v_max el numero de asociado
-                select to_number(max(asociado)) into v_max
-                from participantes;
-                
-                -- El while verifica si se a insertado el jugador o a llegado al número maximo de participantes
-                while v_val = false or v_j = v_max
-                loop
-                 DBMS_OUTPUT.PUT_LINE('while');
-                    -- Select saca todos los participantes 
-                    select asociado into v_jugador
-                    from participantes
-                    where rownum = v_j;
-                    
-                    if (v_jugador not like v_arbitrando or v_arbitrando = null) then 
-                         DBMS_OUTPUT.PUT_LINE('if arbitro');
-                        if (v_jugador not like v_jugado or v_jugado = null) then
-                                                 DBMS_OUTPUT.PUT_LINE('if jugador');
-                            -- Select con random value para sacar el numero de la ficha
-                            select ceil(DBMS_RANDOM.VALUE(0, 4)) into v_ficha
-                            from dual;
-                            
-                            -- Case para convertir el numero random en el color correspondiente
-                            case v_ficha
-                            
-                                when 1 
-                                    then v_color := 'AZUL';
-                                when 2 
-                                    then v_color := 'ROJO';
-                                when 3
-                                    then v_color := 'AMARILLO';
-                                when 4
-                                    then v_color := 'VERDE';
-                            end case;
-                            
-                            -- Insertamos el jugador en la partida
-                            insert into juega (nombre_competicion, fecha_competicion, jornada, n_jugador, color_ficha)
-                            values (ncomp, fcomp, jor, v_jugador, v_color);
-                            
-                            DBMS_OUTPUT.PUT_LINE('Jugador insertado');
-                                                    
-                            v_val := true;
-                        end if;
-                    end if;
-                    v_j := v_j + 1;
-                end loop;
-             
-             else 
-             
-                if (v_jugador not like v_arbitrando or v_arbitrando = null) then 
-                         DBMS_OUTPUT.PUT_LINE('if arbitro');
-                        if (v_jugador not like v_jugado or v_jugado = null) then
-                                                 DBMS_OUTPUT.PUT_LINE('if jugador');
-                            -- Select con random value para sacar el numero de la ficha
-                            select ceil(DBMS_RANDOM.VALUE(0, 4)) into v_ficha
-                            from dual;
-                            
-                            -- Case para convertir el numero random en el color correspondiente
-                            case v_ficha
-                            
-                                when 1 
-                                    then v_color := 'AZUL';
-                                when 2 
-                                    then v_color := 'ROJO';
-                                when 3
-                                    then v_color := 'AMARILLO';
-                                when 4
-                                    then v_color := 'VERDE';
-                            end case;
-                            
-                            -- Insertamos el jugador en la partida
-                            insert into juega (nombre_competicion, fecha_competicion, jornada, n_jugador, color_ficha)
-                            values (ncomp, fcomp, jor, v_jugador, v_color);
-                            
-                            DBMS_OUTPUT.PUT_LINE('Jugador insertado');
-                                                    
-                            v_val := true;
-                        end if;
-                    end if;
-             
-             end if;
-             
-           
-            v_i := v_i + 1;
-        end loop;
-   end loop;
 end; 
 /
+
+-- Procedimiento insercción ganador
 
 
 
