@@ -249,7 +249,6 @@ begin
 end; 
 /
 
--- Procedimiento insercción ganador
 
 
 
