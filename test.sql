@@ -67,6 +67,14 @@ execute insert_ganador_partida_auto('antonio20');
 
 select * from procedures;
 
+
+ select narbi
+                              from (select n_arbitro as narbi, rownum as rnum, nombre_competicion as ncomp
+                                    from partida
+                                    where rownum <= 1
+                                    and nombre_competicion like 'FLOREN Y FICHAS' )
+                    where rnum = 1;
+
 select * from ganadores;
 
              select njug 
@@ -76,3 +84,21 @@ select * from ganadores;
                         and nombre_competicion like 'antonio20' 
                         and jornada = '14/12/2024 10:01:02')
             where rnum = 1;
+            
+            
+select n_jugador
+                                from (select n_jugador, rownum as rnum
+                                    from ganadores
+                                    where rownum <=2 and
+                                    ncomp = )
+                    where rnum = 2;
+                    
+                    select narbi
+                              from (select n_arbitro as narbi, rownum as rnum, nombre_competicion as ncomp
+                                    from partida
+                                    where rownum <= 1
+                                    and nombre_competicion like 'FLOREN Y FICHAS' )
+                    where rnum = 1;
+                    
+                    
+select * from ganadores;

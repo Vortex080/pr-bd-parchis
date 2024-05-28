@@ -110,13 +110,14 @@ Create table juega(
   n_jugador varchar2(3),
   color_ficha varchar2(20) constraint juega_color_ficha_NN not null,
   
-  constraint juega_pk primary key (n_jugador,jornada,nombre_competicion,fecha_competicion),
+  constraint juega_pk primary key (jornada,nombre_competicion,fecha_competicion),
   
   constraint juega_fk_partida foreign key (jornada,nombre_competicion,fecha_competicion) 
     references partida(jornada,nombre_competicion,fecha_competicion),
   constraint juega_fk_jugador foreign key (n_jugador) 
     references jugador(n_jugador)
 );
+
 
 
 create table ganadores(

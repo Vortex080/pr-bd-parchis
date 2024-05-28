@@ -803,7 +803,7 @@ begin
         -- Llama al procidimiento de creación de partida
         insert_partida_comp(:new.nombre, :new.fecha, 1);
         -- Llama al procedimineto de insercción de jugadores en partida
-        inserta_jugador_partida(:new.nombre , :new.fecha);
+        inserta_jugador_partida(:new.nombre , :new.fecha, 1);
     
     end if;
     
