@@ -121,10 +121,11 @@ begin
                     where rnum = i;
                     
                      -- Saca el jugaodr a insertar
-                    select asociado into v_jugador
-                                from (select asociado, rownum as rnum
-                                    from participantes
-                                    where rownum <= k)
+                    select n_jugador into v_jugador
+                                from (select n_jugador, rownum as rnum
+                                    from ganadores
+                                    where rownum <= k and
+                                    jornada = fcomp+f_i)
                     where rnum = k;
                     
                      -- Verifica que el jugador no es albitro de esa partida
@@ -176,6 +177,9 @@ begin
         
         when 3
             then
+            
+                f_i := f_i + 7*1400;
+                f_f := f_f + 7*1400;
                 
             for i in 1..4
              loop
@@ -198,10 +202,11 @@ begin
                     where rnum = i;
                     
                      -- Saca el jugaodr a insertar
-                    select asociado into v_jugador
-                                from (select asociado, rownum as rnum
-                                    from participantes
-                                    where rownum <= k)
+                    select n_jugador into v_jugador
+                                from (select n_jugador, rownum as rnum
+                                    from ganadores
+                                    where rownum <= k and
+                                    jornada = fcomp+f_i)
                     where rnum = k;
                     
                      -- Verifica que el jugador no es albitro de esa partida

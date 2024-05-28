@@ -123,6 +123,6 @@ create table ganadores(
 
     n_jugador varchar2(3),
     ncomp varchar2(30),
-    ronda number
+    jornada date
 
 );
