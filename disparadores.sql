@@ -11,7 +11,7 @@ alter session set nls_date_format = 'DD/MM/YYYY HH24:MI:SS';
 -- Disparador para controlar que el DNI sea correcto
 -- En este caso usa ID en vez de DNI
 
-c
+
 --5 A
 create or replace trigger trigger_participantes_id
 before insert on participantes
@@ -165,10 +165,7 @@ begin
 end;
 /
        
-      begin 
-          listar_partidas_por_realizar('PARTIDA PARCHÍS LIMA');
-end;
-/
+execute listar_partidas_por_realizar('LAS FUENTEZUELAS');   
       
 --5D
 
@@ -186,10 +183,7 @@ begin
 end;
 /
 
-begin 
-          listar_partidas_programadas('PARTIDA PARCHÍS LIMA');
-end;
-/
+execute listar_partidas_programadas('LAS FUENTEZUELAS');
 
 --5E
 
@@ -214,10 +208,9 @@ begin
 
 end;
 /
-begin 
-          listar_partidas_porrealizadas('PARTIDA PARCHÍS LIMA');
-end;
-/
+
+ 
+
 
 
 --5F
@@ -252,7 +245,7 @@ end;
 /
 
 declare
-    v_nombre_competicion varchar2(30) := 'PARTIDA PARCHÍS LIMA'; -- reemplaza con el nombre de la competición
+    v_nombre_competicion varchar2(30) := 'LAS FUENTEZUELAS'; -- reemplaza con el nombre de la competición
 begin
     mostrar_partidas_jugador(v_nombre_competicion);
 end;
@@ -439,7 +432,7 @@ begin
 end;
 /
 
-execute listado_parti_compe('PARTIDA PARCHÍS LIMA');
+execute listado_parti_compe('LAS FUENTEZUELAS');
 
 select count(p.*), pa.n_jugador_gana
   from participantes p
@@ -740,7 +733,7 @@ begin
         job_name        => 'GANADORES_TEMP_JOB',
         job_type        => 'PLSQL_BLOCK',
         job_action      => 'begin almacenar_ganadores_temporada; end;',
-        start_date      => to_timestamp_tz('2024-06-30 00:00:00 Europe/Madrid', 'YYYY-MM-DD HH24:MI:SS TZR'),
+        start_date      => to_timestamp_tz('2024-06-29 00:00:00 Europe/Madrid', 'YYYY-MM-DD HH24:MI:SS TZR'),
         repeat_interval => null,
         enabled         => true
     );
